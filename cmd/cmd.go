@@ -4,6 +4,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	fileFlag string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "parquet-buddy",
 	Short: "You're parquest friend",
@@ -11,10 +15,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() error {
 	rootCmd.AddCommand(metadataCommand())
+	rootCmd.AddCommand(toJSONCommand())
 
 	return rootCmd.Execute()
 }
-
-var (
-	fileFlag string
-)
