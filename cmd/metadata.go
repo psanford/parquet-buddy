@@ -7,7 +7,9 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/xitongsys/parquet-go-source/local"
+	"github.com/xitongsys/parquet-go/parquet"
 	"github.com/xitongsys/parquet-go/reader"
+	"github.com/xitongsys/parquet-go/schema"
 )
 
 func metadataCommand() *cobra.Command {
@@ -46,7 +48,15 @@ func dumpMetaAction(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	out, err := json.MarshalIndent(pr.SchemaHandler, "", "  ")
+	meta := struct {
+		SchemaHandler *schema.SchemaHandler
+		Footer        *parquet.FileMetaData
+	}{
+		SchemaHandler: pr.SchemaHandler,
+		Footer:        pr.Footer,
+	}
+
+	out, err := json.MarshalIndent(meta, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}
