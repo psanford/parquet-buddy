@@ -40,15 +40,17 @@ func toJSONAction(cmd *cobra.Command, args []string) {
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
 
-	for {
+	rows := pr.GetNumRows()
+
+	for i := int64(0); i < rows; i++ {
 		got, err := pr.ReadByNumber(1)
-		if err == io.EOF {
+		if err == io.EOF || len(got) < 1 {
 			break
 		} else if err != nil {
 			log.Fatalf("Failed to read record: %s", err)
 		}
 
-		if err = enc.Encode(got); err != nil {
+		if err = enc.Encode(got[0]); err != nil {
 			log.Fatalf("Failed to marshal record to json: %s", err)
 		}
 	}
