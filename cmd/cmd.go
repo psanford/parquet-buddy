@@ -16,6 +16,7 @@ var rootCmd = &cobra.Command{
 func Execute() error {
 	rootCmd.AddCommand(metadataCommand())
 	rootCmd.AddCommand(toJSONCommand())
+	rootCmd.AddCommand(csvToParquetCommand())
 
 	return rootCmd.Execute()
 }
